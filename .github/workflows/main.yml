@@ -40,9 +40,10 @@ jobs:
       if: always()
       with:
         files: 'reports/*.xml'
-    - name: Create and push version tag
-      run: |
-          git fetch --prune --unshallow || true
-          git tag -a v${{ github.event.inputs.version }} -m "Release ${{ github.event.inputs.version }}"
-          git push origin v${{ github.event.inputs.version }}
-        
+    - name: tag-version-action
+      uses: daniel-habib/tag-version-action@v1.0.0
+      if: github.event_name == 'workflow_dispatch'
+      with:
+        the_version:
+          inputs.version
+          
