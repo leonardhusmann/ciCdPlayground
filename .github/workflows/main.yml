@@ -43,10 +43,7 @@ jobs:
     - name: Create and push version tag
       if: github.event_type == 'workflow_dispatch'
       run: |
-        git config user.name "GitHub Actions"
-        git config user.email "actions@github.com"
-        git fetch --prune --unshallow || true
-        git tag -a v${{ github.event.inputs.version }} -m "Release ${{ github.event.inputs.version }}"
-        git push origin v${{ github.event.inputs.version }}
+        git tag v${{ inputs.version }}
+        git push origin v${{ inputs.version }}
 
           
