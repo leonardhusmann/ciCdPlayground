@@ -14,7 +14,7 @@ permissions:
   checks: write
   pull-requests: write
   id-token: write
-  contents: read
+  contents: write
   pages: write
 
 jobs:
@@ -40,10 +40,14 @@ jobs:
       if: always()
       with:
         files: 'reports/*.xml'
-    - name: tag-version-action
-      uses: daniel-habib/tag-version-action@v1.0.0
-      if: github.event_name == 'workflow_dispatch'
-      with:
-        the_version:
-          inputs.version
+    - name: Configure Git
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+    - name: Create and push version tag
+      run: |
+        git fetch --prune --unshallow || true
+        git tag -a v${{ github.event.inputs.version }} -m "Release ${{ github.event.inputs.version }}"
+        git push origin v${{ github.event.inputs.version }}
+
           
