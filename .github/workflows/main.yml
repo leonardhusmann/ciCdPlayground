@@ -4,6 +4,11 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version'
+        required: true
+
   
 permissions:
   checks: write
@@ -35,4 +40,9 @@ jobs:
       if: always()
       with:
         files: 'reports/*.xml'
+    - name: Create and push version tag
+      run: |
+          git fetch --prune --unshallow || true
+          git tag -a v${{ github.event.inputs.version }} -m "Release ${{ github.event.inputs.version }}"
+          git push origin v${{ github.event.inputs.version }}
         
