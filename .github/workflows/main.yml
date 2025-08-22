@@ -40,12 +40,11 @@ jobs:
       if: always()
       with:
         files: 'reports/*.xml'
-    - name: Configure Git
+    - name: Create and push version tag
+      if: github.event_type == 'workflow_dispatch'
       run: |
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
-    - name: Create and push version tag
-      run: |
         git fetch --prune --unshallow || true
         git tag -a v${{ github.event.inputs.version }} -m "Release ${{ github.event.inputs.version }}"
         git push origin v${{ github.event.inputs.version }}
