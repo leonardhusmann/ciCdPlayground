@@ -21,11 +21,21 @@ pipeline {
             steps {
                 sh 'yarn test'
             }
+            post {
+                always {
+                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: '**/reports/**/*.xml', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+                }
+            }
         }
 
         stage('test e2e') {
             steps {
                 sh 'yarn test:e2e'
+            }
+            post {
+                always {
+                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: '**/reports/**/*.xml', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+                }
             }
         }
 
